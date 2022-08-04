@@ -47,3 +47,22 @@ def label_bioes(ann_dir, ann_type="csv", convert_csv=True):
             ann_df.to_csv(path)
         elif ann_type == "xlsx":
             ann_df.to_excel(path)
+
+
+def get_label_list(ann_dir):
+    ann_paths = glob.glob(os.path.join(ann_dir, "*.csv"))
+    all_labels = []
+    for path in ann_paths:
+        labels = []
+        ann_df = pd.read_csv(path)
+        ann_cols = ["left", "top", "width", "height", "text", "label", "LABELS"]
+        ann_fields = ann_df[ann_cols]
+        for i, row in ann_fields.iterrows():
+            labels.append(row["LABELS"])
+        all_labels.extend(labels)
+
+    unique_labels = set(all_labels)
+    print(unique_labels)
+    with open("label_bioes.txt", "w") as fp:
+        for label in unique_labels:
+            fp.write(label+"\n")
