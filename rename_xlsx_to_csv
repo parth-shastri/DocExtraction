@@ -1,0 +1,6 @@
+import os
+import glob
+PATH = r"C:\Users\parth.shastri.AD1\PycharmProjects\DocExtraction\data\labelled_annotations\labelled"
+names = glob.glob(os.path.join(PATH, "*.xlsx"))
+for i, name in enumerate(names):
+    os.rename(name, os.path.join(PATH, os.listdir(PATH)[i][:-4] + "csv"))

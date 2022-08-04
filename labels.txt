@@ -12,5 +12,5 @@ aggregate
 gross_salary
 tax_payable
 net_salary
-quarter_receipt_no
+quarter_receipt
 other
