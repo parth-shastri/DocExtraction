@@ -1,0 +1,16 @@
+certificate_no
+last_updated_on
+pan_employee
+pan_deductor
+tan_deductor
+assessment_year
+period_with_employer_from
+period_with_employer_to
+name_address_employee
+name_address_employer
+aggregate
+gross_salary
+tax_payable
+net_salary
+quarter_receipt_no
+other
