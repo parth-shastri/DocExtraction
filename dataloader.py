@@ -155,7 +155,6 @@ csv_dataset = DocParsingDataset(config.TRAIN_DATA_PATH,
 csv_dataloader = DataLoader(csv_dataset, batch_size=2, shuffle=True)
 
 if __name__ == "__main__":
-
-tokenizer = config.TOKENIZER
-for tokens in tokenizer.convert_ids_to_tokens(csv_dataset[0]["input_ids"]):
-    print(tokens, end=" ")
+    tokenizer = config.TOKENIZER
+    for tokens in tokenizer.convert_ids_to_tokens(csv_dataset[0]["input_ids"]):
+        print(tokens, end=" ")
