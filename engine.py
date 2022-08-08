@@ -1,14 +1,14 @@
-import torch
-from tqdm import tqdm
 import config
 import numpy as np
+import torch
+from PIL import ImageDraw, ImageFont
 from seqeval.metrics import (
     classification_report,
     f1_score,
     precision_score,
     recall_score,
 )
-from PIL import ImageDraw, ImageFont
+from tqdm import tqdm
 
 num_epochs = config.NUM_EPOCHS
 label_map = {i: label for i, label in enumerate(config.LABEL_LIST)}
@@ -77,7 +77,11 @@ def train_fn(model, dataloader, optimizer, device):
     model.train()
     losses = []
     for epoch in range(num_epochs):
-        for i, batch in tqdm(enumerate(dataloader), total=len(dataloader), desc="Training Epoch {}".format(epoch + 1)):
+        for i, batch in tqdm(
+            enumerate(dataloader),
+            total=len(dataloader),
+            desc="Training Epoch {}".format(epoch + 1),
+        ):
             batch = {k: v.to(device) for k, v in batch.items()}
             outputs = model(**batch)
             loss = outputs.loss
@@ -97,7 +101,12 @@ def draw_boxes(img, boxes, labels):
     if labels is not None:
         for box, label in zip(boxes, labels):
             drawer.rectangle(box, width=2, outline="red")
-            drawer.text((box[0] + 10, box[1] - 10), label_map[label], fill=color_map[label_map[label]], font=font)
+            drawer.text(
+                (box[0] + 10, box[1] - 10),
+                label_map[label],
+                fill=color_map[label_map[label]],
+                font=font,
+            )
     else:
         for box in boxes:
             drawer.rectangle(box, width=2, outline="red")

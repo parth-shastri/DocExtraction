@@ -1,5 +1,7 @@
 import glob
 import os
+
+import config
 import pandas as pd
 
 
@@ -34,11 +36,17 @@ def label_bioes(ann_dir, ann_type="csv", convert_csv=True):
             if sent_len == 1:
                 bioes_labels.append("S-" + label.upper() if label != "other" else "O")
             elif sent_len > 1:
-                bioes_labels.append("B-" + labels[i].upper() if label != "other" else "O")
+                bioes_labels.append(
+                    "B-" + labels[i].upper() if label != "other" else "O"
+                )
                 while i < word_pointer - 1:
-                    bioes_labels.append("I-" + labels[i].upper() if label != "other" else "O")
+                    bioes_labels.append(
+                        "I-" + labels[i].upper() if label != "other" else "O"
+                    )
                     i += 1
-                bioes_labels.append("E-" + labels[i].upper() if label != "other" else "O")
+                bioes_labels.append(
+                    "E-" + labels[i].upper() if label != "other" else "O"
+                )
                 i += 1
             i += 1
 
@@ -65,4 +73,10 @@ def get_label_list(ann_dir):
     print(unique_labels)
     with open("label_bioes.txt", "w") as fp:
         for label in unique_labels:
-            fp.write(label+"\n")
+            fp.write(label + "\n")
+
+
+if __name__ == "__main__":
+    label_bioes(ann_dir=config.ANNOTATIONS_PATH, ann_type="csv", convert_csv=True)
+
+    get_label_list(ann_dir=config.ANNOTATIONS_PATH)

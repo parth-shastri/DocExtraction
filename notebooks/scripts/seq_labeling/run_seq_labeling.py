@@ -26,6 +26,8 @@ import shutil
 
 import numpy as np
 import torch
+
+from layoutlm import FunsdDataset, LayoutlmConfig, LayoutlmForTokenClassification
 from seqeval.metrics import (
     classification_report,
     f1_score,
@@ -38,18 +40,16 @@ from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
 from tqdm import tqdm, trange
 from transformers import (
-    WEIGHTS_NAME,
     AdamW,
     BertConfig,
     BertForTokenClassification,
     BertTokenizer,
+    get_linear_schedule_with_warmup,
     RobertaConfig,
     RobertaForTokenClassification,
     RobertaTokenizer,
-    get_linear_schedule_with_warmup,
+    WEIGHTS_NAME,
 )
-
-from layoutlm import FunsdDataset, LayoutlmConfig, LayoutlmForTokenClassification
 
 logger = logging.getLogger(__name__)
 
@@ -95,7 +95,7 @@ def get_labels(path):
 def train(  # noqa C901
     args, train_dataset, model, tokenizer, labels, pad_token_label_id
 ):
-    """ Train the model """
+    """Train the model"""
     if args.local_rank in [-1, 0]:
         tb_writer = SummaryWriter(logdir="runs/" + os.path.basename(args.output_dir))
 
@@ -213,7 +213,9 @@ def train(  # noqa C901
             if args.model_type in ["layoutlm"]:
                 inputs["bbox"] = batch[4].to(args.device)
             inputs["token_type_ids"] = (
-                batch[2].to(args.device) if args.model_type in ["bert", "layoutlm"] else None
+                batch[2].to(args.device)
+                if args.model_type in ["bert", "layoutlm"]
+                else None
             )  # RoBERTa don"t use segment_ids
 
             outputs = model(**inputs)

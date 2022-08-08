@@ -1,9 +1,9 @@
+import config
+from dataloader import csv_dataloader
+from engine import eval_fn, train_fn
+from model import layout_model_for_token_classification
 from torch.optim import AdamW
 from transformers import LayoutLMForTokenClassification
-import config
-from engine import train_fn, eval_fn
-from dataloader import csv_dataloader
-from model import layout_model_for_token_classification
 
 
 def run():
